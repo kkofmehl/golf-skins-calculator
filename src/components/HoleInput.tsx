@@ -53,42 +53,61 @@ const HoleInput: React.FC<HoleInputProps> = ({
     : currentSkinValue;
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto mb-4">
-      <h2 className="text-xl font-bold mb-4">
-        Hole {holeNumber} 
-        <span className="ml-2 text-green-600">
-          (${displayValue.toFixed(2)} {accumulatedSkins > 1 ? `- ${accumulatedSkins} skins` : ''})
-        </span>
-      </h2>
+    <div className="golf-card">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-golf-green-800">
+          Hole {holeNumber}
+        </h2>
+        <div className="text-xl font-medium text-golf-green-700 bg-fairway-100 py-1 px-4 rounded-lg">
+          ${displayValue.toFixed(2)} {accumulatedSkins > 1 ? `(${accumulatedSkins} skins)` : ''}
+        </div>
+      </div>
       
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <div className="flex items-center mb-2">
-            <input
-              type="checkbox"
-              id="halved"
-              checked={isHalved}
-              onChange={(e) => handleHalvedChange(e.target.checked)}
-              className="mr-2"
-            />
-            <label htmlFor="halved" className="font-medium">Hole was halved (carry over)</label>
+        <div className="mb-6">
+          <div className="bg-fairway-100 p-4 rounded-lg">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                id="halved"
+                checked={isHalved}
+                onChange={(e) => handleHalvedChange(e.target.checked)}
+                className="golf-checkbox mr-3"
+              />
+              <span className="text-lg font-medium">Hole was halved (carry over)</span>
+            </label>
           </div>
           
           {!isHalved && (
-            <div className="mt-4">
-              <label className="block mb-2 font-medium">Who won the hole?</label>
-              <div className="grid grid-cols-2 gap-2">
+            <div className="mt-5">
+              <label className="golf-label">Who won the hole?</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {players.map(player => (
-                  <div key={player.id} className="flex items-center">
-                    <input
-                      type="radio"
-                      id={`winner-${player.id}`}
-                      name="winner"
-                      checked={winnerId === player.id}
-                      onChange={() => handleWinnerChange(player.id)}
-                      className="mr-2"
-                    />
-                    <label htmlFor={`winner-${player.id}`}>{player.name}</label>
+                  <div 
+                    key={player.id} 
+                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      winnerId === player.id 
+                        ? 'border-golf-green-500 bg-golf-green-50' 
+                        : 'border-gray-200 hover:border-golf-green-300'
+                    }`}
+                    onClick={() => handleWinnerChange(player.id)}
+                  >
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        id={`winner-${player.id}`}
+                        name="winner"
+                        checked={winnerId === player.id}
+                        onChange={() => handleWinnerChange(player.id)}
+                        className="golf-radio mr-3"
+                      />
+                      <label 
+                        htmlFor={`winner-${player.id}`}
+                        className="text-lg font-medium cursor-pointer flex-grow"
+                      >
+                        {player.name}
+                      </label>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -97,17 +116,19 @@ const HoleInput: React.FC<HoleInputProps> = ({
         </div>
         
         {!isHalved && (
-          <div className="mb-4">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="birdie"
-                checked={isBirdie}
-                onChange={(e) => setIsBirdie(e.target.checked)}
-                className="mr-2"
-              />
-              <label htmlFor="birdie" className="font-medium">
-                Birdie {birdieDoublesValue ? "(Double Value)" : ""}
+          <div className="mb-6">
+            <div className="bg-fairway-100 p-4 rounded-lg">
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  id="birdie"
+                  checked={isBirdie}
+                  onChange={(e) => setIsBirdie(e.target.checked)}
+                  className="golf-checkbox mr-3"
+                />
+                <span className="text-lg font-medium">
+                  Birdie {birdieDoublesValue ? "(Double Value)" : ""}
+                </span>
               </label>
             </div>
           </div>
@@ -116,10 +137,10 @@ const HoleInput: React.FC<HoleInputProps> = ({
         <button
           type="submit"
           disabled={!isHalved && !winnerId}
-          className={`w-full py-2 px-4 rounded-md text-white transition ${
+          className={`w-full py-3 px-4 rounded-md text-white text-lg font-medium transition-all ${
             isHalved || winnerId
-              ? 'bg-blue-600 hover:bg-blue-700'
-              : 'bg-gray-400 cursor-not-allowed'
+              ? 'golf-btn-primary'
+              : 'golf-btn-disabled'
           }`}
         >
           Submit Hole {holeNumber}

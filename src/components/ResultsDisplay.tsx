@@ -21,51 +21,59 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   const totalPot = totalSkins * settings.skinValue;
   
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center">Game Results</h2>
+    <div className="golf-card">
+      <div className="flex justify-center mb-6">
+        <img 
+          src="/images/golfer_celebrating.png" 
+          alt="Golfer Celebrating" 
+          className="h-32"
+        />
+      </div>
       
-      <div className="mb-6 p-4 bg-gray-50 rounded-md">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-lg font-semibold">Pot Summary</h3>
-          <span className="font-medium text-green-600">${totalPot.toFixed(2)}</span>
+      <h2 className="text-2xl font-bold mb-6 text-center text-golf-green-800">Game Results</h2>
+      
+      <div className="mb-8 p-5 bg-fairway-50 rounded-md border border-fairway-200">
+        <div className="flex justify-between items-center mb-3">
+          <h3 className="text-xl font-semibold text-golf-green-700">Pot Summary</h3>
+          <span className="font-medium text-golf-green-700 text-xl">${totalPot.toFixed(2)}</span>
         </div>
-        <p className="text-sm text-gray-700">
+        <p className="text-gray-700 mb-2">
           Total Skins: {totalSkins} × ${settings.skinValue.toFixed(2)} = ${totalPot.toFixed(2)}
         </p>
-        <p className="text-sm text-gray-700">
+        <p className="text-gray-700">
           Fair Share per Player: ${(totalPot / sortedResults.length).toFixed(2)}
         </p>
       </div>
       
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-3">Player Results</h3>
+        <h3 className="text-xl font-semibold mb-4 text-golf-green-700 border-b border-golf-green-200 pb-2">Player Results</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2 text-left">Player</th>
-                <th className="p-2 text-center">Skins</th>
-                <th className="p-2 text-right">Expected</th>
-                <th className="p-2 text-right">Fair Share</th>
-                <th className="p-2 text-right">Net</th>
+              <tr className="bg-fairway-100">
+                <th className="p-3 text-left font-semibold text-golf-green-800">Player</th>
+                <th className="p-3 text-center font-semibold text-golf-green-800">Skins</th>
+                <th className="p-3 text-right font-semibold text-golf-green-800">Expected</th>
+                <th className="p-3 text-right font-semibold text-golf-green-800">Fair Share</th>
+                <th className="p-3 text-right font-semibold text-golf-green-800">Net</th>
               </tr>
             </thead>
             <tbody>
               {sortedResults.map(result => (
-                <tr key={result.playerId} className="border-t">
-                  <td className="p-2">{result.playerName}</td>
-                  <td className="p-2 text-center">
+                <tr key={result.playerId} className="border-t border-fairway-200">
+                  <td className="p-3 font-medium">{result.playerName}</td>
+                  <td className="p-3 text-center">
                     {result.skinsWon}
                   </td>
-                  <td className="p-2 text-right">
+                  <td className="p-3 text-right">
                     ${result.expectedWinnings.toFixed(2)}
                   </td>
-                  <td className="p-2 text-right">
+                  <td className="p-3 text-right">
                     ${result.fairShare.toFixed(2)}
                   </td>
-                  <td className={`p-2 text-right font-medium ${
+                  <td className={`p-3 text-right font-bold ${
                     result.totalWinnings > 0 
-                      ? 'text-green-600' 
+                      ? 'text-golf-green-600' 
                       : result.totalWinnings < 0 
                         ? 'text-red-600' 
                         : ''
@@ -81,24 +89,26 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       </div>
       
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-3">Payment Summary</h3>
-        {sortedResults.flatMap(result => 
-          result.payments.map((payment, index) => (
-            <div key={`${result.playerId}-${payment.toPlayerId}-${index}`} className="mb-1">
-              <span className="font-medium">{result.playerName}</span> pays{' '}
-              <span className="font-medium">{payment.toPlayerName}</span>:{' '}
-              <span className="text-green-600 font-medium">${payment.amount.toFixed(2)}</span>
-            </div>
-          ))
-        )}
-        {!sortedResults.some(r => r.payments.length > 0) && (
-          <p className="text-gray-500 italic">No payments needed - game is even</p>
-        )}
+        <h3 className="text-xl font-semibold mb-4 text-golf-green-700 border-b border-golf-green-200 pb-2">Payment Summary</h3>
+        <div className="bg-white p-4 rounded-md border border-fairway-200">
+          {sortedResults.flatMap(result => 
+            result.payments.map((payment, index) => (
+              <div key={`${result.playerId}-${payment.toPlayerId}-${index}`} className="mb-3 text-lg">
+                <span className="font-medium">{result.playerName}</span> pays{' '}
+                <span className="font-medium">{payment.toPlayerName}</span>:{' '}
+                <span className="text-golf-green-600 font-bold">${payment.amount.toFixed(2)}</span>
+              </div>
+            ))
+          )}
+          {!sortedResults.some(r => r.payments.length > 0) && (
+            <p className="text-gray-500 italic text-center py-3">No payments needed - game is even</p>
+          )}
+        </div>
       </div>
       
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-3">Hole Results</h3>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+        <h3 className="text-xl font-semibold mb-4 text-golf-green-700 border-b border-golf-green-200 pb-2">Hole Results</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {holeResults.map((hole, index) => {
             const winner = sortedResults.find(r => r.playerId === hole.winnerId);
             
@@ -123,26 +133,28 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
             const holeValue = totalSkinsWon * settings.skinValue;
             
             return (
-              <div key={hole.holeNumber} className="border rounded-md p-2 text-center">
-                <div className="font-medium">Hole {hole.holeNumber}</div>
-                <div className="text-sm">
+              <div key={hole.holeNumber} className="border-2 border-golf-green-100 rounded-md p-3 text-center">
+                <div className="font-bold text-lg text-golf-green-800">Hole {hole.holeNumber}</div>
+                <div className="text-lg my-1">
                   {hole.winnerId === null 
-                    ? 'Halved' 
-                    : winner?.playerName}
+                    ? <span className="font-medium text-gray-600">Halved</span> 
+                    : <span className="font-medium">{winner?.playerName}</span>}
                 </div>
                 {hole.winnerId !== null && (
-                  <div className="text-xs text-blue-600">
+                  <div className="text-sm text-blue-600">
                     {accumulatedSkins} skin{accumulatedSkins !== 1 ? 's' : ''}
                     {hole.isBirdie && settings.birdieDoublesValue && ' + 1 birdie skin'}
                   </div>
                 )}
                 {hole.winnerId !== null && (
-                  <div className="text-xs text-green-600">
+                  <div className="text-golf-green-600 font-medium mt-1">
                     ${holeValue.toFixed(2)}
                   </div>
                 )}
                 {hole.isBirdie && (
-                  <div className="text-xs text-green-600 mt-1">Birdie</div>
+                  <div className="text-sm text-golf-green-600 mt-2 bg-golf-green-50 py-1 px-2 rounded-full inline-block">
+                    Birdie
+                  </div>
                 )}
               </div>
             );
@@ -150,9 +162,9 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
         </div>
       </div>
       
-      <div className="mb-8 p-4 bg-gray-50 rounded-md">
-        <h3 className="text-lg font-semibold mb-2">How Skins & Payouts Work</h3>
-        <ul className="text-sm text-gray-700 list-disc pl-5">
+      <div className="mb-8 p-5 bg-fairway-50 rounded-md border border-fairway-200">
+        <h3 className="text-xl font-semibold mb-3 text-golf-green-700">How Skins & Payouts Work</h3>
+        <ul className="text-gray-700 list-disc pl-5 space-y-1">
           <li>Each hole is worth 1 skin</li>
           <li>If a hole is halved (tied), the skin carries over to the next hole</li>
           <li>A birdie {settings.birdieDoublesValue ? 'earns an extra skin' : 'doesn\'t earn an extra skin'}</li>
@@ -165,8 +177,9 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       
       <button
         onClick={onRestart}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+        className="golf-btn-primary w-full flex items-center justify-center gap-2"
       >
+        <img src="/images/golf_flag.png" alt="" className="h-6" />
         New Game
       </button>
     </div>

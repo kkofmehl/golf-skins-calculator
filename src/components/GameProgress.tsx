@@ -53,18 +53,18 @@ const GameProgress: React.FC<GameProgressProps> = ({ settings, onRestart }) => {
         />
       ) : (
         <div>
-          <div className="bg-white p-4 rounded-lg shadow-md max-w-2xl mx-auto mb-4">
+          <div className="golf-card mb-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold">
+              <h2 className="text-xl font-bold text-golf-green-800">
                 Golf Skins Game
               </h2>
-              <div className="text-sm">
+              <div className="text-lg font-medium bg-golf-green-100 text-golf-green-800 px-3 py-1 rounded-full">
                 Hole {currentHole} of {settings.numberOfHoles}
               </div>
             </div>
             
-            <div className="mt-2 text-sm">
-              <p>
+            <div className="mt-4 border-t border-b border-golf-green-100 py-3 my-3">
+              <p className="mb-2">
                 <span className="font-medium">Players:</span> {settings.players.map(p => p.name).join(', ')}
               </p>
               <p>
@@ -74,9 +74,9 @@ const GameProgress: React.FC<GameProgressProps> = ({ settings, onRestart }) => {
             </div>
             
             {/* Display the progress bar */}
-            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-3">
+            <div className="w-full bg-gray-200 rounded-full h-3 mt-3">
               <div 
-                className="bg-blue-600 h-2.5 rounded-full" 
+                className="bg-golf-green-500 h-3 rounded-full transition-all duration-500" 
                 style={{ width: `${(currentHole / settings.numberOfHoles) * 100}%` }}
               ></div>
             </div>
@@ -93,21 +93,23 @@ const GameProgress: React.FC<GameProgressProps> = ({ settings, onRestart }) => {
           
           {/* Summary of previous holes */}
           {holeResults.length > 0 && (
-            <div className="bg-white p-4 rounded-lg shadow-md max-w-2xl mx-auto">
-              <h3 className="text-lg font-semibold mb-2">Previous Holes</h3>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+            <div className="golf-card mt-6">
+              <h3 className="text-xl font-semibold mb-4 text-golf-green-700">Previous Holes</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {holeResults.map(hole => {
                   const winner = settings.players.find(p => p.id === hole.winnerId);
                   return (
-                    <div key={hole.holeNumber} className="border rounded-md p-2 text-center text-sm">
-                      <div className="font-medium">Hole {hole.holeNumber}</div>
-                      <div>
+                    <div key={hole.holeNumber} className="border-2 border-golf-green-100 rounded-md p-3 text-center">
+                      <div className="font-medium text-lg">Hole {hole.holeNumber}</div>
+                      <div className="my-1 font-medium">
                         {hole.winnerId === null 
                           ? 'Halved' 
                           : winner?.name}
                       </div>
                       {hole.isBirdie && (
-                        <div className="text-xs text-green-600 mt-1">Birdie</div>
+                        <div className="text-sm text-golf-green-600 mt-1 bg-golf-green-50 py-1 px-2 rounded-full inline-block">
+                          Birdie
+                        </div>
                       )}
                     </div>
                   );
